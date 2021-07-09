@@ -1,13 +1,12 @@
 import akka.actor.typed.ActorSystem
+import akka.actor.typed.javadsl.Behaviors
+import com.typesafe.config.ConfigFactory
 
 fun main(args: Array<String>) {
-    val main = ActorSystem.create(GreeterBox.create(), "helloakka")
+    val config = ConfigFactory.load()
+    val host = config.getString("http.host")
+    val port = config.getInt("http.port")
 
-    main.tell(GreetMessage("Hello, World!"))
+    Behaviors.setup { it.spawn() }
 
-    try {
-        readLine()
-    } finally {
-        main.terminate()
-    }
 }
